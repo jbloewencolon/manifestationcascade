@@ -4,6 +4,6 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/core.test.js",
-    "serve": "python3 -m http.server 8080 --directory site"
+    "serve": "python3 -m http.server 8080"
   }
 }

@@ -118,6 +118,8 @@ export function buildView(stage, opts) {
       if (stage.dir !== s.dir) stage.dir = s.dir;
       document.body.classList.toggle("is-active", s.active);
       setText(r.langName, s.langName);
+      r.select.setAttribute("aria-label", s.langAria);
+      r.soundBtn.setAttribute("aria-label", s.soundAria);
       if (r.select.value !== s.lang) r.select.value = s.lang;
       if (r.tz) setText(r.tz, s.tz + " · " + s.utc);
       r.soundBtn.setAttribute("aria-pressed", String(s.sound));

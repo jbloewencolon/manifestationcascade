@@ -9,3 +9,7 @@
 - [x] Browser check: no console errors, CSP violations or external requests; RTL and mobile verified
 - [x] CNAME for manifestationcascade.com
 - [x] Owner decisions: daily cadence; tone rooted in tradition
+- [x] Fix 404: moved the site to the repo root (Pages serves `/` or `/docs` only); added 404.html
+- [x] Secular copy with alchemical hints in all 10 languages; localized aria labels
+- [x] Contrast audit: all palettes pass WCAG AA (lowest 6.13:1)
+- [x] Wrote endpoint-plan.md for owner confirmation

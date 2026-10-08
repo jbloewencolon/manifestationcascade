@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 process.env.TZ = "America/New_York";
-const { compute, fmt, startOn, HOUR, STRINGS, LANGS } = await import("../site/js/core.js");
+const { compute, fmt, startOn, HOUR, STRINGS, LANGS } = await import("../js/core.js");
 const at = (y, mo, d, h, mi, s = 0) => new Date(y, mo - 1, d, h, mi, s).getTime();
 
 test("before 19:07 -> waiting, counts down to today's 19:07", () => {
