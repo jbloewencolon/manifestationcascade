@@ -28,13 +28,15 @@ main:focus { outline: none; }
 .stage > header, .stage > main, .stage > footer { position: relative; }
 .nojs { margin: 15vh auto; max-width: 40ch; padding: 0 24px; text-align: center; line-height: 1.6; }
 
-.hdr { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.hdr { display: flex; justify-content: space-between; align-items: center; gap: .5rem 1rem; }
 .hdr-right { display: flex; align-items: center; gap: 20px; }
 .lang { position: relative; min-height: 44px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .lang:focus-within { outline: 2px solid currentColor; outline-offset: 3px; }
 .lang select { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; font-size: 1rem; } /* 16px: iOS zooms smaller form fields on focus */
 .lang option { color: #16202B; background: #fff; font-size: 1rem; }
-.sound { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; background: transparent; color: inherit; cursor: pointer; }
+.jump { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 1rem; color: var(--muted); font-variant-numeric: tabular-nums; text-align: center; text-decoration: none; position: relative; }
+.jump:hover { color: var(--fg); }
+.sound { flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; background: transparent; color: inherit; cursor: pointer; }
 
 .main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
 .theme { margin: 0; text-wrap: balance; }

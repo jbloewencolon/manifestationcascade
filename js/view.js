@@ -65,6 +65,9 @@ export function buildView(stage, opts) {
   right.append(r.motionBtn, r.soundBtn);
   header.append(langLabel, right);
 
+  // Quick jump to the live countdown, so the story above it never hides when the session starts
+  r.jump = el("a", "jump"); r.jump.href = "#main";
+
   // About the practice (top of page while waiting; hidden during and right after the session so the timer, closing message and I Meditated lead)
   r.about = el("section", "about"); r.about.setAttribute("aria-labelledby", "about-h");
   r.aboutTitle = el("h2", "about-title"); r.aboutTitle.id = "about-h";
@@ -110,7 +113,7 @@ export function buildView(stage, opts) {
 
   r.status = el("p", "sr-only"); r.status.setAttribute("role", "status");
 
-  stage.replaceChildren(r.canvas, header, r.about, main, footer, r.status);
+  stage.replaceChildren(r.canvas, header, r.jump, r.about, main, footer, r.status);
 
   return {
     refs: r,
@@ -120,6 +123,11 @@ export function buildView(stage, opts) {
       r.motionBtn.addEventListener("click", () => ctrl.toggleMotion());
       r.commit.addEventListener("click", () => { ctrl.commit(); keep(r.committed); });
       r.med.addEventListener("click", () => { ctrl.meditate(); keep(r.medDone); });
+      r.jump.addEventListener("click", (e) => {
+        e.preventDefault();
+        const mn = document.getElementById("main"), calm = matchMedia("(prefers-reduced-motion: reduce)").matches || document.body.classList.contains("still");
+        mn.tabIndex = -1; mn.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" }); mn.focus({ preventScroll: true });
+      });
       r.calBtn.addEventListener("click", () => ctrl.cur && downloadIcs(ctrl.cur));
     },
     update(s, changed) {
@@ -154,7 +162,8 @@ export function buildView(stage, opts) {
       r.story.forEach((n, i) => setText(n, s.story[i]));
       setText(r.doTitle, s.doTitle);
       setText(r.doBody, s.doBody);
-      r.about.hidden = s.state !== "waiting";
+      r.about.hidden = s.state !== "waiting"; r.jump.hidden = r.about.hidden;
+      setText(r.jump, s.countLabel + " " + s.count + " \u2193");
       setText(r.calBtn, s.calLabel);
       const g = googleUrl(s); if (r.calLink.getAttribute("href") !== g) r.calLink.setAttribute("href", g);
       if (changed) setText(r.status, s.countLabel + ". " + s.sub);

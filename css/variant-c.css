@@ -13,13 +13,13 @@ body.v-c.is-active { --bg: #161513; --fg: #EDE6D8; --muted: #ADA597; }
 .v-c .sound { border: 0; opacity: .85; }
 @media (hover: hover) { .v-c .sound:hover { opacity: 1; } }
 .v-c .main { padding: 12px 24px 24px; }
-.v-c .mark { width: min(52vmin, 440px); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-.v-c .theme { max-width: 72%; font-weight: 300; font-size: clamp(1.75rem, 3.4vw, 2.75rem); line-height: 1.15; letter-spacing: .01em; }
+.v-c .mark { width: clamp(15rem, 52vmin, 27.5rem); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+.v-c .theme { max-width: 80%; overflow-wrap: anywhere; hyphens: auto; font-weight: 300; font-size: clamp(1.5rem, 3.4vw, 2.75rem); line-height: 1.15; letter-spacing: .01em; }
 .v-c .count { order: 1; margin-top: 36px; font-weight: 300; font-size: clamp(1.875rem, 3.4vw, 2.5rem); font-variant-numeric: tabular-nums lining-nums; letter-spacing: .06em; }
 .v-c .label { order: 2; margin: 12px 0 0; font-style: italic; font-size: 1rem; color: var(--muted); }
 .v-c .sub { order: 3; margin: 24px 0 0; font-size: 1.0625rem; line-height: 1.55; color: var(--muted); max-width: 38ch; min-height: 26px; }
 .v-c .actions { order: 4; gap: 28px; margin-top: 36px; min-height: 46px; font-size: 1.0625rem; }
-.v-c .btn { padding: 12px 0 4px; border: 0; border-block-end: 1px solid currentColor; font-size: inherit; transition: opacity .3s; }
+.v-c .btn { min-height: 2.75rem; padding: 12px 0 4px; border: 0; border-block-end: 1px solid currentColor; font-size: inherit; transition: opacity .3s; }
 @media (hover: hover) { .v-c .btn:hover { opacity: .6; } }
 .v-c .note { padding: 12px 0 4px; font-style: italic; color: var(--muted); }
 .v-c .ftr { align-items: center; gap: 20px; padding: 12px 36px 32px; text-align: center; }

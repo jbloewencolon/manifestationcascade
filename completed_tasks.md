@@ -14,3 +14,8 @@
 - [x] Contrast audit: all palettes pass WCAG AA (lowest 6.13:1)
 - [x] Wrote endpoint-plan.md for owner confirmation
 - [x] Full accessibility audit (axe-core + scripted keyboard/reflow/text-size/contrast checks) and fixes: pause control, skip link, focus management, lang on options, nav links instead of ARIA tabs, rem font sizes, 44px targets, localized aria labels. See accessibility-audit.md
+- [x] About the practice section (rewritten story) at the top of every variant, 10 languages
+- [x] Variant C animation runs perpetually (draw, hold, fade, redraw); stays static under reduced motion / pause
+- [x] Real-clock check of the 19:07-20:07 hour on all variants: palette, label, timer, I Meditated window, complete, reset
+- [x] Add to calendar button (client-side .ics + Google Calendar link), tested under the shipped CSP
+- [x] Mobile audit (8 viewports x 3 variants x 3 states + 9 languages at 320px) and fixes
