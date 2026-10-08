@@ -43,7 +43,7 @@ main:focus { outline: none; }
 .label, .sub { text-wrap: pretty; }
 .count { font-variant-numeric: tabular-nums; margin: 0; line-height: 1; }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
-.btn { background: transparent; color: inherit; cursor: pointer; }
+.btn { min-width: 2.75rem; background: transparent; color: inherit; cursor: pointer; }
 .note { margin: 0; }
 
 .ftr { display: flex; flex-direction: column; }
