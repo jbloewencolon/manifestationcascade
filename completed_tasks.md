@@ -8,3 +8,4 @@
 - [x] Unit tests for the clock state machine (incl. DST) and translation key parity
 - [x] Browser check: no console errors, CSP violations or external requests; RTL and mobile verified
 - [x] CNAME for manifestationcascade.com
+- [x] Owner decisions: daily cadence; tone rooted in tradition

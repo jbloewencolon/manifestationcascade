@@ -2,7 +2,10 @@
 
 ## Phase 0: Decisions (blocking)
 - [ ] Owner chooses variant A, B or C (then delete the other two and the tab bar)
-- [ ] Answer open decisions (cadence, duration, tone, backend)
+- [x] Cadence: daily
+- [x] Tone: rooted in a tradition
+- [ ] Name the tradition and a reviewer from within it
+- [ ] Answer remaining decisions (duration, meaning of 7:07, backend)
 - [ ] Receive design document
 
 ## Phase 1: Front end polish

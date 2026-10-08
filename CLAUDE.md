@@ -32,6 +32,11 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 - **Accessibility:** respect `prefers-reduced-motion`, sufficient contrast in both visual states, full keyboard use, screen reader labels, Screen Wake Lock during the session.
 - **Performance:** small page weight for slow connections.
 
+## Decisions
+
+- Cadence: **daily** (decided).
+- Tone: **rooted in a tradition** (decided; which tradition is still to be named by the owner, and it drives the wording of the instructions, the "Complete" message, the audio and the About text).
+
 ## Open decisions (ask the owner before assuming)
 
-Cadence (single/daily/weekly), full hour vs. any-length window, meaning of "7:07", secular vs. interfaith tone, theme governance, public reporting.
+Which tradition (and who reviews the wording for it), variant A/B/C, backend choice, full hour vs. any-length window, meaning of "7:07", theme governance, public reporting.
