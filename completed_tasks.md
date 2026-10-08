@@ -13,3 +13,4 @@
 - [x] Secular copy with alchemical hints in all 10 languages; localized aria labels
 - [x] Contrast audit: all palettes pass WCAG AA (lowest 6.13:1)
 - [x] Wrote endpoint-plan.md for owner confirmation
+- [x] Full accessibility audit (axe-core + scripted keyboard/reflow/text-size/contrast checks) and fixes: pause control, skip link, focus management, lang on options, nav links instead of ARIA tabs, rem font sizes, 44px targets, localized aria labels. See accessibility-audit.md

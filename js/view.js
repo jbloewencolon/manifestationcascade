@@ -26,6 +26,8 @@ function svg(size, vb, strokeW, shapes) {
   return { svg: s, refs };
 }
 
+// Move focus to the confirmation when the pressed button disappears, so keyboard and screen-reader users keep their place.
+const keep = (n) => { n.tabIndex = -1; n.focus(); };
 const setText = (n, v) => { if (n.textContent !== v) n.textContent = v; };
 
 // opts: { numPrefix: "" | "0", globe: bool, muteX: bool, tz: bool, progress: bool, ring: bool }
@@ -44,11 +46,13 @@ export function buildView(stage, opts) {
   r.langName = el("span", "lang-name");
   r.select = el("select");
   r.select.setAttribute("aria-label", "Language");
-  LANGS.forEach((l) => { const o = el("option", null, l.name); o.value = l.code; r.select.appendChild(o); });
+  LANGS.forEach((l) => { const o = el("option", null, l.name); o.value = l.code; o.lang = l.code; r.select.appendChild(o); });
   langLabel.append(r.langName, r.select);
 
   const right = el("div", "hdr-right");
   if (opts.tz) { r.tz = el("span", "tz"); r.tz.dir = "ltr"; right.appendChild(r.tz); }
+  r.motionBtn = el("button", "sound"); r.motionBtn.type = "button";
+  r.motionBtn.appendChild(svg(18, "0 0 20 20", "1.2", [["path", { d: "M7 5v10M13 5v10" }]]).svg);
   r.soundBtn = el("button", "sound"); r.soundBtn.type = "button"; r.soundBtn.setAttribute("aria-label", "Sound");
   const ico = svg(18, "0 0 20 20", "1.2", [
     ["path", { d: "M3 8v4h3l4 3V5L6 8H3z" }],
@@ -57,11 +61,11 @@ export function buildView(stage, opts) {
   ]);
   r.waves = ico.refs.waves; r.mute = ico.refs.mute;
   r.soundBtn.appendChild(ico.svg);
-  right.appendChild(r.soundBtn);
+  right.append(r.motionBtn, r.soundBtn);
   header.append(langLabel, right);
 
   // Main
-  const main = el("main", "main");
+  const main = el("main", "main"); main.id = "main";
   r.theme = el("h1", "theme");
   if (opts.ring) { r.mark = el("div", "mark"); r.mark.appendChild(r.theme); main.appendChild(r.mark); }
   else { r.mark = r.theme; main.appendChild(r.theme); }
@@ -106,8 +110,9 @@ export function buildView(stage, opts) {
     bind(ctrl) {
       r.select.addEventListener("change", () => ctrl.setLang(r.select.value));
       r.soundBtn.addEventListener("click", () => ctrl.toggleSound());
-      r.commit.addEventListener("click", () => ctrl.commit());
-      r.med.addEventListener("click", () => ctrl.meditate());
+      r.motionBtn.addEventListener("click", () => ctrl.toggleMotion());
+      r.commit.addEventListener("click", () => { ctrl.commit(); keep(r.committed); });
+      r.med.addEventListener("click", () => { ctrl.meditate(); keep(r.medDone); });
       r.aboutBtn.addEventListener("click", () => {
         r.aboutBody.hidden = !r.aboutBody.hidden;
         r.aboutBtn.setAttribute("aria-expanded", String(!r.aboutBody.hidden));
@@ -120,6 +125,9 @@ export function buildView(stage, opts) {
       setText(r.langName, s.langName);
       r.select.setAttribute("aria-label", s.langAria);
       r.soundBtn.setAttribute("aria-label", s.soundAria);
+      r.motionBtn.setAttribute("aria-label", s.motionAria);
+      r.motionBtn.setAttribute("aria-pressed", String(s.motionOff));
+      document.body.classList.toggle("still", s.motionOff);
       if (r.select.value !== s.lang) r.select.value = s.lang;
       if (r.tz) setText(r.tz, s.tz + " · " + s.utc);
       r.soundBtn.setAttribute("aria-pressed", String(s.sound));

@@ -8,9 +8,9 @@
 ## Phase 1: Front end polish
 - [ ] Fluent human review of all 10 translations (new alchemical copy, "cascade" in ar/he uses waterfall words, safety line)
 - [ ] Final cleanup once the owner drops B and C (remove tab bar, unused CSS/fonts/vendor map data)
-- [ ] Mobile: "YOU" label can overlap buttons in variant B (moot if B is dropped)
+- [ ] Variant B: "YOU" marker can sit behind text (low contrast); moot if B is dropped
 - [ ] Non-Latin fonts: latin subset only vendored; other scripts use system fonts (deliberate, keeps weight low)
-- [ ] Screen-reader run-through with a real device (automated contrast check passed)
+- [ ] Screen-reader run-through with real devices (VoiceOver, NVDA, TalkBack); native-speaker check of aria labels. See `accessibility-audit.md`
 
 ## Phase 2: Counting endpoint (plan and confirm before implementing)
 - [ ] Owner confirms `endpoint-plan.md` (3 questions at its end)

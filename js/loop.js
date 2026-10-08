@@ -6,7 +6,7 @@ export function startLoop(canvas, ctrl, mixSeconds, draw) {
   const t0 = last;
   const frame = (ts) => {
     raf = requestAnimationFrame(frame);
-    const reduce = mq.matches;
+    const reduce = mq.matches || !!(ctrl.cur && ctrl.cur.motionOff);
     if (reduce && ts - lastDraw < 250) return;
     lastDraw = ts;
     const dpr = Math.min(2, devicePixelRatio || 1), rect = canvas.getBoundingClientRect(), w = rect.width, h = rect.height;
