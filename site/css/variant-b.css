@@ -1,0 +1,37 @@
+/* Variant B: Meridian */
+@font-face { font-family: "Instrument Sans"; font-weight: 400; font-display: swap; src: url("../fonts/instrument-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Sans"; font-weight: 500; font-display: swap; src: url("../fonts/instrument-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 300; font-display: swap; src: url("../fonts/ibm-plex-mono-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+
+body.v-b { --bg: #0F1115; --fg: #E8EAED; --muted: #A3ACB7; --accent: #8FA3B8; --warm: #F0A35E; --mono: "IBM Plex Mono", ui-monospace, monospace; }
+body.v-b.is-active { --bg: #14110F; --fg: #FFF4E6; --muted: #CDBBA8; --accent: #F0A35E; }
+.v-b .stage { font-family: "Instrument Sans", system-ui, sans-serif; }
+.v-b .hdr { padding: 20px 28px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; }
+.v-b .lang { padding: 12px 2px; }
+.v-b .tz { color: var(--muted); }
+.v-b .sound { border: 1px solid rgba(127, 127, 127, .35); border-radius: 2px; }
+.v-b .sound:hover { border-color: currentColor; }
+.v-b .theme { font-weight: 500; font-size: clamp(52px, 8.5vw, 124px); line-height: 1; letter-spacing: -.02em; max-width: 16ch; text-shadow: 0 0 40px var(--bg); }
+.v-b .label { margin: 52px 0 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.v-b .count { font-family: var(--mono); font-weight: 300; font-size: clamp(40px, 5.5vw, 64px); }
+.v-b .bar { position: relative; width: min(280px, 70vw); height: 1px; margin-top: 22px; background: rgba(127, 127, 127, .35); }
+.v-b .bar-fill { position: absolute; inset-block: 0; left: 0; width: 0; background: var(--accent); }
+.v-b .sub { margin: 16px 0 0; font-size: 16px; line-height: 1.5; color: var(--muted); max-width: 42ch; min-height: 24px; }
+.v-b .actions { gap: 12px; margin-top: 40px; min-height: 50px; font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.v-b .btn { padding: 15px 24px; border: 1px solid currentColor; border-radius: 2px; letter-spacing: inherit; text-transform: inherit; font-size: inherit; transition: background .3s, color .3s; }
+.v-b .btn:hover { background: #E8EAED; color: #0F1115; }
+.v-b .btn-med { border-color: var(--warm); color: var(--warm); }
+.v-b .btn-med:hover { background: var(--warm); color: #14110F; }
+.v-b .note { color: var(--muted); }
+.v-b .note::before { content: "✓ "; }
+.v-b .note-med { color: var(--warm); }
+.v-b .ftr { gap: 18px; padding: 0 28px 26px; }
+.v-b .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 28px; max-width: 1080px; width: 100%; margin: 0 auto; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.v-b .steps li { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid rgba(127, 127, 127, .3); }
+.v-b .steps .n { font-family: var(--mono); font-size: 12px; color: var(--fg); }
+.v-b .steps .t { text-wrap: pretty; }
+.v-b .safe { font-size: 13px; color: var(--muted); max-width: 60ch; }
+.v-b .row { justify-content: space-between; gap: 8px 20px; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); }
+.v-b .about-btn { padding: 12px 0; font-size: 12px; letter-spacing: inherit; }
+.v-b .about-body { max-width: 60ch; font-size: 15px; line-height: 1.6; color: var(--muted); }

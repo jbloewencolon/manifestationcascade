@@ -1,0 +1,4 @@
+Fonts (site/fonts): Cormorant Garamond, Source Sans 3, Instrument Sans, IBM Plex Mono, Newsreader.
+  SIL Open Font License 1.1, via @fontsource packages. Latin subset only.
+topojson-client 3.1.0: ISC License, Mike Bostock.
+world-atlas 2.0.2 (land-110m.json): ISC License, derived from Natural Earth (public domain).

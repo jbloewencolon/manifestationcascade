@@ -4,18 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-Greenfield. As of the first commit there is no code, build, lint, or test tooling. Add those commands here once they exist. The source of truth for intent is the concept brief (`manifestation-cascade-concept.md`); a design document is still to come from the owner.
+Three design variants (A Tidal Rings, B Meridian, C Ma) are live behind a tab bar in `site/`. Counting is still a `localStorage` placeholder (no server). The source of truth for intent is `manifestation-cascade-concept.md`; a design document is still to come from the owner.
+
+## Commands
+
+- `npm test` runs the Node unit tests (`test/core.test.js`: state machine incl. DST, formatting, translation key parity). No dependencies to install.
+- `npm run serve` serves `site/` at http://localhost:8080. Append `?preview=waiting|active|activeEnd|complete` to fake the clock (previews never record counts) and `#a|#b|#c` to pick a variant.
+- Deploy: GitHub Pages serving `site/` for manifestationcascade.com (`site/CNAME`). Pages cannot set HTTP headers, so the CSP is a `<meta>` tag in `site/index.html`.
 
 ## What this is
 
 Manifestation Cascade: a daily global collective meditation at **7:07 pm in each visitor's local time zone**, so the practice rolls around the planet as a "cascade". First theme: *End the War* (must be a single editable config value). The site tells visitors when their session starts, guides the hour, and counts participation.
 
-## Architecture (planned, per the brief)
+## Architecture
 
-- **Front end:** one static page (HTML/CSS/JS), one small translation file per language, hosted on GitHub Pages. No framework unless a need is demonstrated.
-- **Back end:** a tiny serverless endpoint (e.g. Cloudflare Workers + KV/D1) with three calls: record visit, record commitment, record meditation. Counters are keyed by date + IANA time zone.
-- **State machine (client-only, from device clock):** Waiting (8:07 pm to 7:07 pm, countdown) -> Active (7:07 to 8:07 pm, 60 min countdown; late joiners see remaining time) -> Complete (8:07 pm, closing message, then back to Waiting). Compute from absolute timestamps on every tick, never a decrementing counter, so sleeping tabs stay correct; let the browser handle DST.
-- **Language:** order is saved choice, then `navigator.languages`, then IP country default, then English. Use logical CSS properties from the start (RTL: Arabic, Hebrew, Persian, Urdu). Language names are shown in their own script. Translation of the theme needs fluent human review.
+- **No build step, no framework, no third-party requests.** Plain ES modules under `site/js`, fonts and map data vendored in `site/fonts` and `site/vendor` (licences in `site/vendor/LICENSES.txt`). The CSP forbids inline scripts and `style` attributes: build DOM with `textContent`/`createElement` and set styles via CSS classes or `element.style.x`, never `innerHTML` or `setAttribute("style")`.
+- `js/core.js`: pure clock state machine (`compute(now)`: waiting -> active -> complete from absolute timestamps, local 19:07), all translation strings (`STRINGS`, DRAFT, need human review), synthesized audio engine, and the `Controller`. One Controller is shared by every variant (one visit count, one audio engine); it emits a cached snapshot (`ctrl.cur`) every 250 ms. `record()` is the placeholder for the future serverless endpoint.
+- `js/view.js` builds the one DOM structure all variants share; `js/loop.js` is the canvas loop (DPR, eased mix, throttled when `prefers-reduced-motion`). `js/variant-{a,b,c}.js` each export `mount(stage, ctrl)` returning a dispose function and own only the canvas art, audio config and view options. Visual styling lives in `css/variant-*.css`, keyed on `body.v-a|b|c` and `body.is-active`.
+- `js/app.js` is the tab shell (hash routing, roving-tabindex tabs).
 
 ## Non-negotiable constraints
 

@@ -1,0 +1,34 @@
+/* Variant A: Tidal Rings */
+@font-face { font-family: "Cormorant Garamond"; font-weight: 300; font-display: swap; src: url("../fonts/cormorant-garamond-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 400; font-display: swap; src: url("../fonts/cormorant-garamond-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-weight: 300; font-display: swap; src: url("../fonts/source-sans-3-latin-300-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-weight: 400; font-display: swap; src: url("../fonts/source-sans-3-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-weight: 500; font-display: swap; src: url("../fonts/source-sans-3-latin-500-normal.woff2") format("woff2"); }
+
+body.v-a { --bg: #F3EFE8; --fg: #16202B; --muted: #4F5A66; --gold: #E2B95B; }
+body.v-a.is-active { --bg: #0B1426; --fg: #F3EFE8; --muted: #B7BFCB; }
+.v-a .stage { font-family: "Source Sans 3", system-ui, sans-serif; }
+.v-a .hdr { padding: 22px 28px; }
+.v-a .lang { font-size: 15px; padding: 10px 4px; }
+.v-a .sound { border: 0; border-radius: 999px; }
+.v-a .sound:hover { background: rgba(127, 127, 127, .14); }
+.v-a .theme { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 300; font-size: clamp(56px, 10vw, 144px); line-height: 1; letter-spacing: .02em; max-width: 14ch; }
+.v-a .label { margin: 56px 0 10px; font-size: 13px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.v-a .count { font-size: clamp(44px, 6vw, 68px); font-weight: 300; letter-spacing: .04em; }
+.v-a .sub { margin: 14px 0 0; font-size: 16px; line-height: 1.5; color: var(--muted); max-width: 40ch; min-height: 24px; }
+.v-a .actions { gap: 12px; margin-top: 44px; min-height: 52px; }
+.v-a .btn { padding: 14px 28px; border: 1px solid currentColor; border-radius: 999px; font-size: 16px; transition: background .3s; }
+.v-a .btn:hover { background: rgba(127, 127, 127, .14); }
+.v-a .btn-med { border-color: var(--gold); color: var(--gold); }
+.v-a .btn-med:hover { background: rgba(226, 185, 91, .12); }
+.v-a .note { font-size: 16px; color: var(--muted); }
+.v-a .note-med { color: var(--gold); }
+.v-a .ftr { align-items: center; gap: 18px; padding: 0 28px 28px; text-align: center; }
+.v-a .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 32px; max-width: 1040px; width: 100%; font-size: 15px; line-height: 1.5; color: var(--muted); text-align: start; }
+.v-a .steps li { display: flex; gap: 10px; }
+.v-a .steps .n { font-family: "Cormorant Garamond", serif; font-size: 20px; line-height: 1.1; color: var(--fg); }
+.v-a .steps .t { text-wrap: pretty; }
+.v-a .safe { font-size: 13px; color: var(--muted); max-width: 60ch; }
+.v-a .row { justify-content: center; gap: 8px 20px; font-size: 14px; color: var(--muted); }
+.v-a .about-btn { padding: 10px 0; font-size: 14px; }
+.v-a .about-body { max-width: 56ch; font-size: 15px; line-height: 1.6; color: var(--muted); }
