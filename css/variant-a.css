@@ -11,16 +11,16 @@ body.v-a.is-active { --bg: #0B1426; --fg: #F3EFE8; --muted: #B7BFCB; }
 .v-a .hdr { padding: 22px 28px; }
 .v-a .lang { font-size: 0.9375rem; padding: 10px 4px; }
 .v-a .sound { border: 0; border-radius: 999px; }
-.v-a .sound:hover { background: rgba(127, 127, 127, .14); }
+@media (hover: hover) { .v-a .sound:hover { background: rgba(127, 127, 127, .14); } }
 .v-a .theme { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 300; font-size: clamp(3.5rem, 10vw, 9rem); line-height: 1; letter-spacing: .02em; max-width: 14ch; }
 .v-a .label { margin: 56px 0 10px; font-size: 0.875rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
 .v-a .count { font-size: clamp(2.75rem, 6vw, 4.25rem); font-weight: 300; letter-spacing: .04em; }
 .v-a .sub { margin: 14px 0 0; font-size: 1rem; line-height: 1.5; color: var(--muted); max-width: 40ch; min-height: 24px; }
 .v-a .actions { gap: 12px; margin-top: 44px; min-height: 52px; }
 .v-a .btn { padding: 14px 28px; border: 1px solid currentColor; border-radius: 999px; font-size: 1rem; transition: background .3s; }
-.v-a .btn:hover { background: rgba(127, 127, 127, .14); }
+@media (hover: hover) { .v-a .btn:hover { background: rgba(127, 127, 127, .14); } }
 .v-a .btn-med { border-color: var(--gold); color: var(--gold); }
-.v-a .btn-med:hover { background: rgba(226, 185, 91, .12); }
+@media (hover: hover) { .v-a .btn-med:hover { background: rgba(226, 185, 91, .12); } }
 .v-a .note { font-size: 1rem; color: var(--muted); }
 .v-a .note-med { color: var(--gold); }
 .v-a .ftr { align-items: center; gap: 18px; padding: 0 28px 28px; text-align: center; }
@@ -31,4 +31,7 @@ body.v-a.is-active { --bg: #0B1426; --fg: #F3EFE8; --muted: #B7BFCB; }
 .v-a .safe { font-size: 0.875rem; color: var(--muted); max-width: 60ch; }
 .v-a .row { justify-content: center; gap: 8px 20px; font-size: 0.875rem; color: var(--muted); }
 .v-a .about-btn { padding: 10px 0; font-size: 0.875rem; }
-.v-a .about-body { max-width: 56ch; font-size: 0.9375rem; line-height: 1.6; color: var(--muted); }
+.v-a .about-title { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; letter-spacing: .02em; text-align: center; margin-bottom: 1.5rem; }
+.v-a .story { font-size: 1.0625rem; line-height: 1.75; }
+.v-a .do-title { margin-top: 2rem; font-size: .875rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.v-a .do-body { font-size: 1.0625rem; line-height: 1.75; }

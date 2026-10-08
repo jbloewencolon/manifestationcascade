@@ -1,6 +1,7 @@
 // Shared page structure for all three variants. Variants differ in CSS, canvas art and a few options.
 // Everything is built with createElement/textContent (no innerHTML) so the strict CSP and XSS posture hold.
 import { LANGS } from "./core.js";
+import { downloadIcs, googleUrl } from "./calendar.js";
 
 const NS = "http://www.w3.org/2000/svg";
 
@@ -64,6 +65,13 @@ export function buildView(stage, opts) {
   right.append(r.motionBtn, r.soundBtn);
   header.append(langLabel, right);
 
+  // About the practice (top of page while waiting; hidden during and right after the session so the timer, closing message and I Meditated lead)
+  r.about = el("section", "about"); r.about.setAttribute("aria-labelledby", "about-h");
+  r.aboutTitle = el("h2", "about-title"); r.aboutTitle.id = "about-h";
+  r.story = [0, 1, 2, 3, 4].map(() => el("p", "story"));
+  r.doTitle = el("h3", "do-title"); r.doBody = el("p", "do-body");
+  r.about.append(r.aboutTitle, ...r.story, r.doTitle, r.doBody);
+
   // Main
   const main = el("main", "main"); main.id = "main";
   r.theme = el("h1", "theme");
@@ -79,7 +87,9 @@ export function buildView(stage, opts) {
   r.committed = el("p", "note");
   r.med = el("button", "btn btn-med"); r.med.type = "button";
   r.medDone = el("p", "note note-med");
-  acts.append(r.commit, r.committed, r.med, r.medDone);
+  r.calBtn = el("button", "btn btn-cal"); r.calBtn.type = "button";
+  r.calLink = el("a", "about-btn cal-link", "Google Calendar"); r.calLink.target = "_blank"; r.calLink.rel = "noopener noreferrer";
+  acts.append(r.commit, r.committed, r.med, r.medDone, r.calBtn, r.calLink);
   main.append(r.sub, acts);
 
   // Footer
@@ -95,15 +105,12 @@ export function buildView(stage, opts) {
   r.safe = el("p", "safe");
   const row = el("div", "row");
   r.privacy = el("span");
-  r.aboutBtn = el("button", "about-btn"); r.aboutBtn.type = "button"; r.aboutBtn.setAttribute("aria-expanded", "false");
-  row.append(r.privacy, r.aboutBtn);
-  r.aboutBody = el("p", "about-body"); r.aboutBody.hidden = true; r.aboutBody.id = "about-body";
-  r.aboutBtn.setAttribute("aria-controls", "about-body");
-  footer.append(r.steps, r.safe, row, r.aboutBody);
+  row.append(r.privacy);
+  footer.append(r.steps, r.safe, row);
 
   r.status = el("p", "sr-only"); r.status.setAttribute("role", "status");
 
-  stage.replaceChildren(r.canvas, header, main, footer, r.status);
+  stage.replaceChildren(r.canvas, header, r.about, main, footer, r.status);
 
   return {
     refs: r,
@@ -113,10 +120,7 @@ export function buildView(stage, opts) {
       r.motionBtn.addEventListener("click", () => ctrl.toggleMotion());
       r.commit.addEventListener("click", () => { ctrl.commit(); keep(r.committed); });
       r.med.addEventListener("click", () => { ctrl.meditate(); keep(r.medDone); });
-      r.aboutBtn.addEventListener("click", () => {
-        r.aboutBody.hidden = !r.aboutBody.hidden;
-        r.aboutBtn.setAttribute("aria-expanded", String(!r.aboutBody.hidden));
-      });
+      r.calBtn.addEventListener("click", () => ctrl.cur && downloadIcs(ctrl.cur));
     },
     update(s, changed) {
       if (stage.lang !== s.lang) stage.lang = s.lang;
@@ -146,8 +150,13 @@ export function buildView(stage, opts) {
       r.stepEls.forEach((n, i) => setText(n, s.steps[i]));
       setText(r.safe, s.safe);
       setText(r.privacy, s.privacy);
-      setText(r.aboutBtn, s.about);
-      setText(r.aboutBody, s.aboutBody);
+      setText(r.aboutTitle, s.aboutTitle);
+      r.story.forEach((n, i) => setText(n, s.story[i]));
+      setText(r.doTitle, s.doTitle);
+      setText(r.doBody, s.doBody);
+      r.about.hidden = s.state !== "waiting";
+      setText(r.calBtn, s.calLabel);
+      const g = googleUrl(s); if (r.calLink.getAttribute("href") !== g) r.calLink.setAttribute("href", g);
       if (changed) setText(r.status, s.countLabel + ". " + s.sub);
     },
   };
