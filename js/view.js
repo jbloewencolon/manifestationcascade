@@ -65,15 +65,19 @@ export function buildView(stage, opts) {
   right.append(r.motionBtn, r.soundBtn);
   header.append(langLabel, right);
 
-  // Quick jump to the live countdown, so the story above it never hides when the session starts
-  r.jump = el("a", "jump"); r.jump.href = "#main";
-
-  // About the practice (top of page while waiting; hidden during and right after the session so the timer, closing message and I Meditated lead)
-  r.about = el("section", "about"); r.about.setAttribute("aria-labelledby", "about-h");
-  r.aboutTitle = el("h2", "about-title"); r.aboutTitle.id = "about-h";
+  // About the practice: a disclosure ("dropdown") at the top, closed by default so the countdown leads.
+  r.about = el("section", "about"); r.about.setAttribute("aria-label", "About");
+  const h2 = el("h2", "about-title");
+  r.aboutBtn = el("button", "about-toggle"); r.aboutBtn.type = "button";
+  r.aboutBtn.setAttribute("aria-expanded", "false"); r.aboutBtn.setAttribute("aria-controls", "about-panel");
+  r.aboutLabel = el("span", "about-label");
+  const chev = svg(14, "0 0 14 14", "1.4", [["path", { d: "M3 5l4 4 4-4" }]]).svg; chev.setAttribute("class", "chev");
+  r.aboutBtn.append(r.aboutLabel, chev); h2.appendChild(r.aboutBtn);
+  r.aboutPanel = el("div", "about-panel"); r.aboutPanel.id = "about-panel"; r.aboutPanel.hidden = true;
   r.story = [0, 1, 2, 3, 4].map(() => el("p", "story"));
   r.doTitle = el("h3", "do-title"); r.doBody = el("p", "do-body");
-  r.about.append(r.aboutTitle, ...r.story, r.doTitle, r.doBody);
+  r.aboutPanel.append(...r.story, r.doTitle, r.doBody);
+  r.about.append(h2, r.aboutPanel);
 
   // Main
   const main = el("main", "main"); main.id = "main";
@@ -113,7 +117,7 @@ export function buildView(stage, opts) {
 
   r.status = el("p", "sr-only"); r.status.setAttribute("role", "status");
 
-  stage.replaceChildren(r.canvas, header, r.jump, r.about, main, footer, r.status);
+  stage.replaceChildren(r.canvas, header, r.about, main, footer, r.status);
 
   return {
     refs: r,
@@ -123,10 +127,9 @@ export function buildView(stage, opts) {
       r.motionBtn.addEventListener("click", () => ctrl.toggleMotion());
       r.commit.addEventListener("click", () => { ctrl.commit(); keep(r.committed); });
       r.med.addEventListener("click", () => { ctrl.meditate(); keep(r.medDone); });
-      r.jump.addEventListener("click", (e) => {
-        e.preventDefault();
-        const mn = document.getElementById("main"), calm = matchMedia("(prefers-reduced-motion: reduce)").matches || document.body.classList.contains("still");
-        mn.tabIndex = -1; mn.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" }); mn.focus({ preventScroll: true });
+      r.aboutBtn.addEventListener("click", () => {
+        const open = r.aboutPanel.hidden; r.aboutPanel.hidden = !open;
+        r.aboutBtn.setAttribute("aria-expanded", String(open));
       });
       r.calBtn.addEventListener("click", () => ctrl.cur && downloadIcs(ctrl.cur));
     },
@@ -158,12 +161,11 @@ export function buildView(stage, opts) {
       r.stepEls.forEach((n, i) => setText(n, s.steps[i]));
       setText(r.safe, s.safe);
       setText(r.privacy, s.privacy);
-      setText(r.aboutTitle, s.aboutTitle);
+      setText(r.aboutLabel, s.aboutTitle);
+      r.about.setAttribute("aria-label", s.aboutTitle);
       r.story.forEach((n, i) => setText(n, s.story[i]));
       setText(r.doTitle, s.doTitle);
       setText(r.doBody, s.doBody);
-      r.about.hidden = s.state !== "waiting"; r.jump.hidden = r.about.hidden;
-      setText(r.jump, s.countLabel + " " + s.count + " \u2193");
       setText(r.calBtn, s.calLabel);
       const g = googleUrl(s); if (r.calLink.getAttribute("href") !== g) r.calLink.setAttribute("href", g);
       if (changed) setText(r.status, s.countLabel + ". " + s.sub);

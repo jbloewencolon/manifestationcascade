@@ -12,7 +12,7 @@
 - [ ] Non-Latin fonts: latin subset only vendored; other scripts use system fonts (deliberate, keeps weight low)
 - [ ] Screen-reader run-through with real devices (VoiceOver, NVDA, TalkBack); native-speaker check of aria labels. See `accessibility-audit.md`
 
-- [ ] Owner: confirm About-only-while-waiting and the softened "This is going to happen" line
+- [ ] Owner: confirm the softened "This is going to happen" line in the About copy
 - [ ] Native-speaker review of the new About copy and "Add to calendar" label (10 languages)
 
 ## Phase 2: Counting endpoint (plan and confirm before implementing)

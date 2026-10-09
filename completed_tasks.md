@@ -19,3 +19,4 @@
 - [x] Real-clock check of the 19:07-20:07 hour on all variants: palette, label, timer, I Meditated window, complete, reset
 - [x] Add to calendar button (client-side .ics + Google Calendar link), tested under the shipped CSP
 - [x] Mobile audit (8 viewports x 3 variants x 3 states + 9 languages at 320px) and fixes
+- [x] About is now a closed-by-default dropdown (disclosure) at the top of every state; jump link removed

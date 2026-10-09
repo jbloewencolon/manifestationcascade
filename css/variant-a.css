@@ -31,7 +31,8 @@ body.v-a.is-active { --bg: #0B1426; --fg: #F3EFE8; --muted: #B7BFCB; }
 .v-a .safe { font-size: 0.875rem; color: var(--muted); max-width: 60ch; }
 .v-a .row { justify-content: center; gap: 8px 20px; font-size: 0.875rem; color: var(--muted); }
 .v-a .about-btn { padding: 10px 0; font-size: 0.875rem; }
-.v-a .about-title { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; letter-spacing: .02em; text-align: center; margin-bottom: 1.5rem; }
+.v-a .about-toggle { font-size: .9375rem; letter-spacing: .06em; }
+@media (hover: hover) { .v-a .about-toggle:hover { color: var(--fg); } }
 .v-a .story { font-size: 1.0625rem; line-height: 1.75; }
-.v-a .do-title { margin-top: 2rem; font-size: .875rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.v-a .do-title { margin-top: 1.5rem; font-size: .875rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
 .v-a .do-body { font-size: 1.0625rem; line-height: 1.75; }

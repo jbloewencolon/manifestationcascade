@@ -22,7 +22,7 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 - `js/core.js`: pure clock state machine (`compute(now)`: waiting -> active -> complete from absolute timestamps, local 19:07), all translation strings (`STRINGS`, DRAFT, need human review), synthesized audio engine, and the `Controller`. One Controller is shared by every variant (one visit count, one audio engine); it emits a cached snapshot (`ctrl.cur`) every 250 ms. `record()` is the placeholder for the future serverless endpoint.
 - `js/view.js` builds the one DOM structure all variants share; `js/loop.js` is the canvas loop (DPR, eased mix, throttled when `prefers-reduced-motion`). `js/variant-{a,b,c}.js` each export `mount(stage, ctrl)` returning a dispose function and own only the canvas art, audio config and view options. Visual styling lives in `css/variant-*.css`, keyed on `body.v-a|b|c` and `body.is-active`.
 - `js/calendar.js` builds the "Add to calendar" `.ics` in the browser (floating local 19:07-20:07, daily, 10 min reminder; no server) and the Google Calendar link. Unit-tested in `test/calendar.test.js`.
-- The About story (`story`, `doTitle`, `doBody` in `STRINGS`, `{theme}` placeholder) shows at the top only while *waiting*; during and right after the session the timer, closing message and I Meditated lead. A `.jump` link above it keeps the countdown one tap away on phones.
+- The About story (`story`, `doTitle`, `doBody` in `STRINGS`, `{theme}` placeholder) is a disclosure ("dropdown", `button[aria-expanded]` + `#about-panel`) at the top of every state, closed by default so the countdown stays in the first screen on phones.
 - Variant C's ring runs an endless draw/hold/fade/redraw cycle (static under reduced motion or the pause control).
 - `js/app.js` is the variant shell (hash routing; the switcher is a plain `<nav>` of links with `aria-current`, plus a JS-handled skip link).
 
@@ -38,7 +38,7 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 ## Decisions
 
 - Cadence: **daily**. Variant: **A** (keep all three tabs for now). Tone: **secular with alchemical hints** (settling, transmuting heaviness, kindling a flame, releasing into the world); no outcome promises.
-- About copy: the owner's story was rewritten; "This is going to happen" became "We hold this intention with full conviction" to respect the no-guaranteed-outcome rule (owner may override).
+- About is a dropdown, not a full section (owner's call after seeing it push the timer far down on phones). About copy: the owner's story was rewritten; "This is going to happen" became "We hold this intention with full conviction" to respect the no-guaranteed-outcome rule (owner may override).
 - Counting plan is in `endpoint-plan.md`, awaiting owner confirmation. Do not implement before that.
 
 ## Open decisions (ask the owner before assuming)
