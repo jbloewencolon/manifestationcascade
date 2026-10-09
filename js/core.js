@@ -91,7 +91,7 @@ function startLabelFor(lang, ms) {
 
 // Synthesised ambient audio (no audio files to ship or license). Starts only after a user gesture.
 const Sound = {
-  ctx: null, master: null, voice: null, bellT: null, pulseT: null, mode: null,
+  ctx: null, master: null, voice: null, bellT: null, pulseT: null, firstT: null, mode: null,
   ensure() {
     if (!this.ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -133,12 +133,12 @@ const Sound = {
     if (m.bell) {
       const strike = () => self.bell(m.bell.freq, m.bell.gain || 0.15);
       this.bellT = setInterval(strike, m.bell.every * 1000);
-      setTimeout(strike, 2000);
+      this.firstT = setTimeout(strike, 2000);
     }
     if (m.pulse) this.pulseT = setInterval(() => self.thump(m.pulse.gain), 60000 / m.pulse.bpm);
   },
   clear() {
-    clearInterval(this.bellT); clearInterval(this.pulseT); this.mode = null;
+    clearInterval(this.bellT); clearInterval(this.pulseT); clearTimeout(this.firstT); this.mode = null;
     if (this.voice && this.ctx) {
       const v = this.voice, t = this.ctx.currentTime;
       v.g.gain.cancelScheduledValues(t);
@@ -146,6 +146,15 @@ const Sound = {
       setTimeout(() => { v.oscs.forEach((o) => { try { o.stop(); } catch (e) { /* already stopped */ } }); v.g.disconnect(); }, 5000);
     }
     this.voice = null;
+  },
+  // Hard stop for backgrounding: when the page is not visible NOTHING may keep playing or scheduling.
+  // Closing the context silences every oscillator and tail at once and frees the audio hardware;
+  // it is rebuilt on return (see Controller.resumeSound).
+  halt() {
+    clearInterval(this.bellT); clearInterval(this.pulseT); clearTimeout(this.firstT);
+    const c = this.ctx;
+    this.ctx = null; this.master = null; this.voice = null; this.mode = null;
+    if (c && c.state !== "closed") Promise.resolve().then(() => c.close()).catch(() => {});
   },
   bell(f, gain) {
     const ctx = this.ctx; if (!ctx) return;
@@ -186,19 +195,34 @@ export class Controller {
     this.completeAt = null;
     this.setPreview(opts.preview, true);
     this.iv = setInterval(() => this.emit(), 250);
-    this._vis = () => { if (document.visibilityState === "visible") { this.emit(); if (this.last === "active") this.lockScreen(true); } };
+    this._vis = () => {
+      if (document.visibilityState === "visible") { this.emit(); if (this.last === "active") this.lockScreen(true); this.resumeSound(); }
+      else this.pauseSound(); // user switched app / tab, locked the screen, etc.
+    };
+    this._hide = () => this.pauseSound();
     document.addEventListener("visibilitychange", this._vis);
+    window.addEventListener("pagehide", this._hide);
+    document.addEventListener("freeze", this._hide);
     if (get("mc.visit") !== key(Date.now())) { set("mc.visit", key(Date.now())); this.rec("visit"); }
-    if (this.sound) {
-      // Browsers block autoplay: resume the saved "sound on" choice at the first gesture.
-      this._arm = () => {
-        document.removeEventListener("pointerdown", this._arm, true);
-        document.removeEventListener("keydown", this._arm, true);
-        if (this.sound) this.applySound();
-      };
-      document.addEventListener("pointerdown", this._arm, true);
-      document.addEventListener("keydown", this._arm, true);
-    }
+    if (this.sound) this.armGesture(); // browsers block autoplay: resume the saved "sound on" choice at the first gesture
+  }
+  armGesture() {
+    if (this._arm) return;
+    this._arm = () => {
+      document.removeEventListener("pointerdown", this._arm, true);
+      document.removeEventListener("keydown", this._arm, true);
+      this._arm = null;
+      if (this.sound && document.visibilityState === "visible") this.applySound();
+    };
+    document.addEventListener("pointerdown", this._arm, true);
+    document.addEventListener("keydown", this._arm, true);
+  }
+  pauseSound() { Sound.halt(); } // the saved preference (this.sound) is kept, so sound comes back with the page
+  resumeSound() {
+    if (!this.sound || document.visibilityState !== "visible") return;
+    this.applySound();
+    // Some mobile browsers refuse to start audio without a fresh tap: retry on the next gesture.
+    setTimeout(() => { if (this.sound && (!Sound.ctx || Sound.ctx.state !== "running")) this.armGesture(); }, 400);
   }
   // Preview modes (?preview=...) fake the clock for design review and never record counts.
   rec(kind) { if (this.preview === "live") record(kind, this.tz); }
@@ -249,6 +273,7 @@ export class Controller {
   toggleMotion() { this.still = !this.still; set("mc.still", this.still ? "1" : "0"); this.emit(); }
   toggleSound() { this.sound = !this.sound; set("mc.sound", this.sound ? "1" : "0"); this.applySound(); this.emit(); }
   applySound() {
+    if (this.sound && document.visibilityState !== "visible") return;
     Sound.setOn(this.sound);
     if (this.sound) { Sound.mode = null; Sound.setMode(this.last === "waiting" ? "waiting" : "active", this.opts.audio); }
   }
@@ -257,6 +282,8 @@ export class Controller {
   destroy() {
     clearInterval(this.iv);
     document.removeEventListener("visibilitychange", this._vis);
+    window.removeEventListener("pagehide", this._hide);
+    document.removeEventListener("freeze", this._hide);
     this.subs = [];
     Sound.clear(); Sound.setOn(false); this.lockScreen(false);
   }

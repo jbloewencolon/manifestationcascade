@@ -10,6 +10,7 @@
 - [ ] Final cleanup once the owner drops B and C (remove tab bar, unused CSS/fonts/vendor map data)
 - [ ] Variant B: "YOU" marker can sit behind text (low contrast); moot if B is dropped
 - [ ] Non-Latin fonts: latin subset only vendored; other scripts use system fonts (deliberate, keeps weight low)
+- [ ] Real-device check of background audio (iOS Safari, Android Chrome): switch app, lock screen, return; also the calendar download and wake lock
 - [ ] Screen-reader run-through with real devices (VoiceOver, NVDA, TalkBack); native-speaker check of aria labels. See `accessibility-audit.md`
 
 - [ ] Owner: confirm the softened "This is going to happen" line in the About copy
