@@ -21,6 +21,15 @@
 - [ ] Implement visit / commit / meditated with IANA tz validation and rate limiting
 - [ ] Replace `record()` placeholder in `site/js/core.js`; loosen CSP `connect-src` to the endpoint only
 
+## Phase 2b: Cascade trackers (plan in `trackers-plan.md`, awaiting go-ahead)
+- [x] Decisions: total counts meditations; whole-hour bands; your band for "planning"; row under the timer
+- [ ] Owner: confirm milestones (108...), meditation window (start+75 min), commitments excluded from total
+- [ ] P0 prep: move `STRINGS` to `js/strings.js`, `record()` to `js/api.js`
+- [ ] P1 UI with mock data in all three skins + strings x10 + empty/error states + tests/audits
+- [ ] P2 backend: session/band schema, POST validation, cached GET /v1/stats, tests
+- [ ] P3 wire live, CSP, polling (visible only), optimistic updates
+- [ ] P4 audits + translator review + privacy-line change (10 languages)
+
 ## Phase 3: Launch
 - [ ] Owner: merge the branch into the Pages branch (Pages source: root), DNS A records, enforce HTTPS
 - [ ] Consider Cloudflare in front for real security headers

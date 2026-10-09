@@ -39,7 +39,7 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 
 - Cadence: **daily**. Variant: **A** (keep all three tabs for now). Tone: **secular with alchemical hints** (settling, transmuting heaviness, kindling a flame, releasing into the world); no outcome promises.
 - About is a dropdown, not a full section (owner's call after seeing it push the timer far down on phones). About copy: the owner's story was rewritten; "This is going to happen" became "We hold this intention with full conviction" to respect the no-guaranteed-outcome rule (owner may override).
-- Counting plan is in `endpoint-plan.md`, awaiting owner confirmation. Do not implement before that.
+- Counting plan is in `endpoint-plan.md`; public trackers are planned in `trackers-plan.md` (total = meditations, whole-hour bands, owner-confirmed). Both await owner go-ahead. Do not implement before that.
 
 ## Open decisions (ask the owner before assuming)
 

@@ -21,3 +21,4 @@
 - [x] Mobile audit (8 viewports x 3 variants x 3 states + 9 languages at 320px) and fixes
 - [x] About is now a closed-by-default dropdown (disclosure) at the top of every state; jump link removed
 - [x] Fix: audio kept playing when the user switched apps on mobile. Audio now fully stops (context closed, timers cleared) when the page is hidden, and resumes only if sound was on. Browser-tested incl. session start while hidden and rapid app switching
+- [x] Code review for the three cascade trackers; owner decisions captured; wrote trackers-plan.md

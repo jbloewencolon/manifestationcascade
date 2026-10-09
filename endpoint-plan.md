@@ -36,3 +36,6 @@ Handler written as a pure function `(request, env) => Response`, tested with `no
 1. Cloudflare Workers + D1 OK? (Needs a Cloudflare account and the domain's DNS, or a `workers.dev` URL to start.)
 2. Subdomain `api.manifestationcascade.com`, or a path on the main domain?
 3. Show the public "meditated today" counter in v1, or later?
+
+## Update (see `trackers-plan.md`)
+Public trackers change this plan: counts are keyed by `(session, band, kind)` instead of UTC `day`, the POST also takes and validates `session` (meditation only within start+75 min), and a cacheable `GET /v1/stats?band=` is added. The public counter question above is answered: yes, show totals.
