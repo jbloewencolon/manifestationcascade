@@ -1,6 +1,6 @@
 // Page structure (built once with createElement/textContent, no innerHTML so the strict CSP and XSS posture hold).
 // Everything is built with createElement/textContent (no innerHTML) so the strict CSP and XSS posture hold.
-import { LANGS } from "./core.js";
+import { LANGS } from "./strings.js";
 import { downloadIcs, googleUrl } from "./calendar.js";
 
 const NS = "http://www.w3.org/2000/svg";

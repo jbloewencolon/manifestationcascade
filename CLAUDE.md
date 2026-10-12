@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-Three design variants (A Tidal Rings, B Meridian, C Ma) are live behind a tab bar; A is the owner's pick but all three are kept for now. The site lives at the repo root (GitHub Pages branch mode only serves `/` or `/docs`). Counting is still a `localStorage` placeholder (no server). The source of truth for intent is `manifestation-cascade-concept.md`; a design document is still to come from the owner.
+The site is the single **Tidal Rings** design (owner's pick). Designs B (Meridian) and C (Ma) and the tab switcher are retired and archived in `archive/variants-b-c/` (see its README). The site lives at the repo root (GitHub Pages branch mode only serves `/` or `/docs`). Counting is still a `localStorage` placeholder (no server). The source of truth for intent is `manifestation-cascade-concept.md`; a design document is still to come from the owner.
 
 ## Commands
 
 - `npm test` runs the Node unit tests (`test/core.test.js`: state machine incl. DST, formatting, translation key parity; `test/calendar.test.js`: .ics output). No dependencies to install.
-- `npm run serve` serves the repo root at http://localhost:8080. Append `?preview=waiting|active|activeEnd|complete` to fake the clock (previews never record counts) and `#a|#b|#c` to pick a variant.
+- `npm run serve` serves the repo root at http://localhost:8080. Append `?preview=waiting|active|activeEnd|complete` to fake the clock (previews never record counts).
 - Deploy: GitHub Pages from the repo root (`/`) for manifestationcascade.com (root `CNAME`, `.nojekyll`, `404.html`). Pages cannot set HTTP headers, so the CSP is a `<meta>` tag in `index.html`. Dev files (tests, md notes) are public too; keep secrets out of the repo.
 
 ## What this is
@@ -19,12 +19,12 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 ## Architecture
 
 - **No build step, no framework, no third-party requests.** Plain ES modules under `js/`, fonts and map data vendored in `fonts/` and `vendor/` (licences in `vendor/LICENSES.txt`). The CSP forbids inline scripts and `style` attributes: build DOM with `textContent`/`createElement` and set styles via CSS classes or `element.style.x`, never `innerHTML` or `setAttribute("style")`.
-- `js/core.js`: pure clock state machine (`compute(now)`: waiting -> active -> complete from absolute timestamps, local 19:07), all translation strings (`STRINGS`, DRAFT, need human review), synthesized audio engine, and the `Controller`. One Controller is shared by every variant (one visit count, one audio engine); it emits a cached snapshot (`ctrl.cur`) every 250 ms. `record()` is the placeholder for the future serverless endpoint.
-- `js/view.js` builds the one DOM structure all variants share; `js/loop.js` is the canvas loop (DPR, eased mix, throttled when `prefers-reduced-motion`). `js/variant-{a,b,c}.js` each export `mount(stage, ctrl)` returning a dispose function and own only the canvas art, audio config and view options. Visual styling lives in `css/variant-*.css`, keyed on `body.v-a|b|c` and `body.is-active`.
+- `js/core.js`: pure clock state machine (`compute(now)`: waiting -> active -> complete from absolute timestamps, local 19:07), the synthesized audio engine and the `Controller`. The Controller emits a cached snapshot (`ctrl.cur`) every 250 ms and is the single choke point for participation events (`rec()`).
+- `js/strings.js`: every user-facing string per language (`STRINGS`, DRAFT, need human review; `{theme}` in `story`, `{m}` in `late`) and `LANGS`. `js/util.js`: safe localStorage `get/set`, `pad`, local-date `key`. `js/api.js`: `record()`, currently a localStorage placeholder for the future serverless endpoint (see `endpoint-plan.md`, `trackers-plan.md`).
+- `js/view.js` builds the page DOM once; `js/scene.js` mounts it with the canvas rings and the audio config; `js/loop.js` is the canvas loop (DPR, eased mix, throttled when `prefers-reduced-motion`). Styling is one stylesheet, `css/style.css`, with `body.is-active` as the night palette.
 - `js/calendar.js` builds the "Add to calendar" `.ics` in the browser (floating local 19:07-20:07, daily, 10 min reminder; no server) and the Google Calendar link. Unit-tested in `test/calendar.test.js`.
 - The About story (`story`, `doTitle`, `doBody` in `STRINGS`, `{theme}` placeholder) is a disclosure ("dropdown", `button[aria-expanded]` + `#about-panel`) at the top of every state, closed by default so the countdown stays in the first screen on phones.
-- Variant C's ring runs an endless draw/hold/fade/redraw cycle (static under reduced motion or the pause control).
-- `js/app.js` is the variant shell (hash routing; the switcher is a plain `<nav>` of links with `aria-current`, plus a JS-handled skip link).
+- `js/app.js` creates the shared Controller, mounts the scene and handles the JS skip link.
 
 ## Non-negotiable constraints
 
@@ -37,7 +37,7 @@ Manifestation Cascade: a daily global collective meditation at **7:07 pm in each
 
 ## Decisions
 
-- Cadence: **daily**. Variant: **A** (keep all three tabs for now). Tone: **secular with alchemical hints** (settling, transmuting heaviness, kindling a flame, releasing into the world); no outcome promises.
+- Cadence: **daily**. Design: **A, Tidal Rings** (committed 2026-10-12; B and C archived). Tone: **secular with alchemical hints** (settling, transmuting heaviness, kindling a flame, releasing into the world); no outcome promises.
 - About is a dropdown, not a full section (owner's call after seeing it push the timer far down on phones). About copy: the owner's story was rewritten; "This is going to happen" became "We hold this intention with full conviction" to respect the no-guaranteed-outcome rule (owner may override).
 - Counting plan is in `endpoint-plan.md`; public trackers are planned in `trackers-plan.md` (total = meditations, whole-hour bands, owner-confirmed). Both await owner go-ahead. Do not implement before that.
 

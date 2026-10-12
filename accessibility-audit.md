@@ -1,5 +1,7 @@
 # Accessibility audit
 
+> Note (2026-10-12): the audit covered designs A, B and C. B and C are now archived in `archive/variants-b-c/`; findings marked for B/C are moot. Re-run for A after each UI change.
+
 Scope: WCAG 2.2 AA plus best practice, variants A/B/C, states waiting/active/complete, languages en/ar/he/ru/zh.
 Method: axe-core 4.14 in Chromium (9 variant/state pages plus 4 languages), scripted keyboard, reflow, text-size, reduced-motion, forced-colors and pixel-sampled contrast checks over the animated canvas.
 The test scripts are not committed; rerun them against `npm run serve` if the design changes.

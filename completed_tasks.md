@@ -22,3 +22,6 @@
 - [x] About is now a closed-by-default dropdown (disclosure) at the top of every state; jump link removed
 - [x] Fix: audio kept playing when the user switched apps on mobile. Audio now fully stops (context closed, timers cleared) when the page is hidden, and resumes only if sound was on. Browser-tested incl. session start while hidden and rapid app switching
 - [x] Code review for the three cascade trackers; owner decisions captured; wrote trackers-plan.md
+- [x] Committed to design A (Tidal Rings); B and C archived in archive/variants-b-c/ (full old site at commit df6ae57); tab switcher, hash routing, B/C fonts and map data removed
+- [x] Phase 0 prep: STRINGS to js/strings.js (verified identical), helpers to js/util.js, record() to js/api.js; 2 new tests
+- [x] Fix: 404 page CSP blocked the favicon (added img-src 'self')

@@ -1,14 +1,12 @@
 # Tasks
 
 ## Phase 0: Decisions
-- [x] Cadence: daily; variant: A (all three tabs kept for now); tone: secular with alchemical hints
+- [x] Cadence: daily; design: A Tidal Rings (committed); tone: secular with alchemical hints
 - [ ] Remaining: duration (full hour vs any length), meaning of 7:07, theme governance, public reporting
 - [ ] Receive design document
 
 ## Phase 1: Front end polish
 - [ ] Fluent human review of all 10 translations (new alchemical copy, "cascade" in ar/he uses waterfall words, safety line)
-- [ ] Final cleanup once the owner drops B and C (remove tab bar, unused CSS/fonts/vendor map data)
-- [ ] Variant B: "YOU" marker can sit behind text (low contrast); moot if B is dropped
 - [ ] Non-Latin fonts: latin subset only vendored; other scripts use system fonts (deliberate, keeps weight low)
 - [ ] Real-device check of background audio (iOS Safari, Android Chrome): switch app, lock screen, return; also the calendar download and wake lock
 - [ ] Screen-reader run-through with real devices (VoiceOver, NVDA, TalkBack); native-speaker check of aria labels. See `accessibility-audit.md`
@@ -19,13 +17,13 @@
 ## Phase 2: Counting endpoint (plan and confirm before implementing)
 - [ ] Owner confirms `endpoint-plan.md` (3 questions at its end)
 - [ ] Implement visit / commit / meditated with IANA tz validation and rate limiting
-- [ ] Replace `record()` placeholder in `site/js/core.js`; loosen CSP `connect-src` to the endpoint only
+- [ ] Replace the `record()` placeholder in `js/api.js`; loosen CSP `connect-src` to the endpoint only
 
 ## Phase 2b: Cascade trackers (plan in `trackers-plan.md`, awaiting go-ahead)
 - [x] Decisions: total counts meditations; whole-hour bands; your band for "planning"; row under the timer
 - [ ] Owner: confirm milestones (108...), meditation window (start+75 min), commitments excluded from total
-- [ ] P0 prep: move `STRINGS` to `js/strings.js`, `record()` to `js/api.js`
-- [ ] P1 UI with mock data in all three skins + strings x10 + empty/error states + tests/audits
+- [x] P0 prep: `STRINGS` -> `js/strings.js`, helpers -> `js/util.js`, `record()` -> `js/api.js`
+- [ ] P1 UI with mock data (single Tidal Rings skin) + strings x10 + empty/error states + tests/audits
 - [ ] P2 backend: session/band schema, POST validation, cached GET /v1/stats, tests
 - [ ] P3 wire live, CSP, polling (visible only), optimistic updates
 - [ ] P4 audits + translator review + privacy-line change (10 languages)

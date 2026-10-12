@@ -18,8 +18,8 @@ Three small public trackers, driven by the counting endpoint from `endpoint-plan
 Copy stays honest: numbers are self-reported, shown as "meditations", and the page's privacy line becomes "We count visits, commitments and meditations by time zone, and show the totals. Nothing else." (10 languages, needs your OK since it changes the public promise).
 
 ## Code review: what this touches
-- **Good fit:** `Controller.rec()` is already the single choke point for events, so the client change is small. `view.js` is the one shared DOM builder, so trackers are built once and only skinned per variant (A/B/C). The `?preview=` modes already skip recording; they will also skip the network and use fixtures.
-- **Needs prep first (small, mechanical):** `STRINGS` lives on 10 enormous lines in `core.js`; adding ~10 keys x 10 languages there is error-prone. Move it to `js/strings.js` (pure move, tests unchanged). Move the `record()` placeholder to `js/api.js` so `core.js` stops growing.
+- **Good fit:** `Controller.rec()` is already the single choke point for events, so the client change is small. `view.js` is the one DOM builder; trackers are added there. (Update 2026-10-12: only design A remains, so there is a single skin.) The `?preview=` modes already skip recording; they will also skip the network and use fixtures.
+- **Prep (done, Phase 0):** `STRINGS` moved to `js/strings.js` one key per line, helpers to `js/util.js`, the `record()` placeholder to `js/api.js`.
 - **Plan changes in `endpoint-plan.md`:** the data model keyed on UTC `day` is not enough. Counts must be keyed by *session* (the UTC instant of that band's 19:07) and *band*. The write now also validates the session, and there is a new cacheable read call. CSP `connect-src` must be loosened to the API origin only.
 - **Privacy rule still holds:** aggregates per session per band, no identifiers, no event log. The only new thing is that aggregates are public.
 
@@ -32,15 +32,15 @@ Copy stays honest: numbers are self-reported, shown as "meditations", and the pa
 ## Client additions
 - `js/band.js` (pure, unit-tested): offset to band, band labels, which band is "in session now".
 - `js/stats.js`: fetch with timeout and `credentials: "omit"`, defensive shape checks, last-good cache, polling every ~45 s with jitter **only while the page is visible and online** (same rule as the audio fix), immediate refresh on return, back-off to 5 min on errors, optimistic +1 after your own Commit / I Meditated.
-- `js/trackers.js`: the three builders, called from `view.js`; per-variant skins in `css/variant-*.css`.
+- `js/trackers.js`: the three builders, called from `view.js`; styled in `css/style.css`.
 - Failure is silent: if the API is down or blocked, the trackers simply do not appear (no error text, no broken layout).
 - Accessibility and i18n: text summaries instead of relying on colour, localized number formatting via `Intl.NumberFormat`, no animation under reduced motion or pause, no live-region chatter, 10 languages x ~10 new strings under the existing key-parity test.
 
 ## Phases
 | Phase | Work | Needs from you |
 |---|---|---|
-| 0 | Prep refactor (`strings.js`, `api.js`) | nothing |
-| 1 | **UI with mock data** for all three skins: trackers, strings, empty/error states, `?mock=` fixtures, tests, a11y + mobile audits. You see and approve the visuals with no backend. | go-ahead |
+| 0 | Prep refactor (`strings.js`, `util.js`, `api.js`): **done** | nothing |
+| 1 | **UI with mock data** in the one Tidal Rings design: trackers, strings, empty/error states, `?mock=` fixtures, tests, a11y + mobile audits. You see and approve the visuals with no backend. | go-ahead |
 | 2 | Backend: schema, POST + GET, node tests (band rounding for India/Nepal/Newfoundland/Chatham, DST days, window and session checks, caching) | Cloudflare account + the 3 answers in `endpoint-plan.md` |
 | 3 | Wire live: replace mock, CSP, polling lifecycle, optimistic updates, end-to-end with the real clock | deploy access |
 | 4 | Audits again (axe, mobile, real-clock hour, contrast over canvas, bundle size) and translator review of new copy | native speakers |

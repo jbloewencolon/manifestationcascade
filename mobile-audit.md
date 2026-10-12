@@ -1,5 +1,7 @@
 # Mobile audit
 
+> Note (2026-10-12): the audit covered designs A, B and C. B and C are now archived in `archive/variants-b-c/`; only A ships.
+
 Scope: variants A/B/C x waiting/active/complete at 8 viewports (320x568, 360x740, 375x667, 390x844, 414x896, 768x1024, 667x375 and 844x390 landscape) with touch emulation and device pixel ratio 2, plus 9 languages (ru, hi, ar, he, zh, fr, pt, es, uk) at 320px, which is the worst case for long words and right-to-left layout. 126 page loads per run.
 
 Checked on each page: horizontal scroll, any element past the viewport edge, clipped text, controls under 44px, theme heading overflow, language select font size (iOS zooms below 16px), viewport meta, JS errors, and whether the countdown shortcut is in the first screen.

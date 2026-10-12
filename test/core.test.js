@@ -2,7 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 process.env.TZ = "America/New_York";
-const { compute, fmt, startOn, HOUR, STRINGS, LANGS } = await import("../js/core.js");
+const { compute, fmt, startOn, HOUR } = await import("../js/core.js");
+const { STRINGS, LANGS } = await import("../js/strings.js");
+const { key, pad } = await import("../js/util.js");
 const at = (y, mo, d, h, mi, s = 0) => new Date(y, mo - 1, d, h, mi, s).getTime();
 
 test("before 19:07 -> waiting, counts down to today's 19:07", () => {
@@ -59,4 +61,19 @@ test("every language has the same string keys and 4 steps", () => {
     assert.deepEqual(Object.keys(STRINGS[l.code]).sort(), keys, l.code);
     assert.equal(STRINGS[l.code].steps.length, 4, l.code);
   }
+});
+
+test("every language has the {theme} placeholder in the story, and no empty strings", () => {
+  for (const l of LANGS) {
+    const s = STRINGS[l.code];
+    assert.equal(s.story.filter((x) => x.includes("{theme}")).length, 1, l.code + " story {theme}");
+    for (const [k, v] of Object.entries(s)) for (const x of [].concat(v)) assert.ok(typeof x === "string" && x.trim().length > 0, l.code + "." + k);
+    assert.ok(s.late.includes("{m}"), l.code + " late {m}");
+  }
+});
+
+test("key() is the local calendar date, pad() zero-fills", () => {
+  assert.equal(key(new Date(2026, 0, 5, 23, 59).getTime()), "2026-01-05");
+  assert.equal(key(new Date(2026, 11, 31, 0, 1).getTime()), "2026-12-31");
+  assert.equal(pad(7), "07");
 });
