@@ -1,4 +1,4 @@
-// Variant A: Tidal Rings. Rings expand from the theme; silver by day, gold with stars during the session.
+// Tidal Rings: rings expand from the theme; silver by day, gold with stars during the session.
 import { mix as cmix } from "./core.js";
 import { buildView } from "./view.js";
 import { startLoop } from "./loop.js";
@@ -10,7 +10,7 @@ const AUDIO = {
 const stars = Array.from({ length: 80 }, (_, i) => [((i * 9301 + 49297) % 233280) / 233280, ((i * 4096 + 150889) % 714025) / 714025, i]);
 
 export function mount(stage, ctrl) {
-  const v = buildView(stage, { numPrefix: "", globe: true, muteX: true });
+  const v = buildView(stage);
   const r = v.refs;
   v.bind(ctrl);
   ctrl.setAudio(AUDIO);

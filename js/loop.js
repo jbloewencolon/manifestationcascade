@@ -1,4 +1,4 @@
-// Canvas animation loop shared by all variants: DPR-aware sizing, eased waiting<->active mix,
+// Canvas animation loop: DPR-aware sizing, eased waiting<->active mix,
 // and a throttled static redraw when the visitor prefers reduced motion.
 export function startLoop(canvas, ctrl, mixSeconds, draw) {
   const mq = matchMedia("(prefers-reduced-motion: reduce)");

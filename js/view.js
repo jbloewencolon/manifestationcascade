@@ -1,4 +1,4 @@
-// Shared page structure for all three variants. Variants differ in CSS, canvas art and a few options.
+// Page structure (built once with createElement/textContent, no innerHTML so the strict CSP and XSS posture hold).
 // Everything is built with createElement/textContent (no innerHTML) so the strict CSP and XSS posture hold.
 import { LANGS } from "./core.js";
 import { downloadIcs, googleUrl } from "./calendar.js";
@@ -31,19 +31,14 @@ function svg(size, vb, strokeW, shapes) {
 const keep = (n) => { n.tabIndex = -1; n.focus(); };
 const setText = (n, v) => { if (n.textContent !== v) n.textContent = v; };
 
-// opts: { numPrefix: "" | "0", globe: bool, muteX: bool, tz: bool, progress: bool, ring: bool }
-export function buildView(stage, opts) {
+export function buildView(stage) {
   const r = {};
   r.canvas = el("canvas"); r.canvas.setAttribute("aria-hidden", "true");
 
   // Header: language picker + sound toggle
   const header = el("header", "hdr");
   const langLabel = el("label", "lang");
-  if (opts.globe) {
-    langLabel.appendChild(svg(16, "0 0 16 16", "1.1", [["circle", { cx: 8, cy: 8, r: 6.5 }], ["ellipse", { cx: 8, cy: 8, rx: 2.8, ry: 6.5 }], ["path", { d: "M1.5 8h13" }]]).svg);
-  } else {
-    const g = el("span", "lang-glyph", "A/文"); g.setAttribute("aria-hidden", "true"); langLabel.appendChild(g);
-  }
+  langLabel.appendChild(svg(16, "0 0 16 16", "1.1", [["circle", { cx: 8, cy: 8, r: 6.5 }], ["ellipse", { cx: 8, cy: 8, rx: 2.8, ry: 6.5 }], ["path", { d: "M1.5 8h13" }]]).svg);
   r.langName = el("span", "lang-name");
   r.select = el("select");
   r.select.setAttribute("aria-label", "Language");
@@ -51,14 +46,13 @@ export function buildView(stage, opts) {
   langLabel.append(r.langName, r.select);
 
   const right = el("div", "hdr-right");
-  if (opts.tz) { r.tz = el("span", "tz"); r.tz.dir = "ltr"; right.appendChild(r.tz); }
   r.motionBtn = el("button", "sound"); r.motionBtn.type = "button";
   r.motionBtn.appendChild(svg(18, "0 0 20 20", "1.2", [["path", { d: "M7 5v10M13 5v10" }]]).svg);
   r.soundBtn = el("button", "sound"); r.soundBtn.type = "button"; r.soundBtn.setAttribute("aria-label", "Sound");
   const ico = svg(18, "0 0 20 20", "1.2", [
     ["path", { d: "M3 8v4h3l4 3V5L6 8H3z" }],
-    ["path", { d: opts.muteX ? "M13 7.5a3.5 3.5 0 0 1 0 5M15 5.5a6.5 6.5 0 0 1 0 9" : "M13 7.5a3.5 3.5 0 0 1 0 5" }, "waves"],
-    ...(opts.muteX ? [["path", { d: "M13 8l4 4M17 8l-4 4" }, "mute"]] : []),
+    ["path", { d: "M13 7.5a3.5 3.5 0 0 1 0 5M15 5.5a6.5 6.5 0 0 1 0 9" }, "waves"],
+    ["path", { d: "M13 8l4 4M17 8l-4 4" }, "mute"],
   ]);
   r.waves = ico.refs.waves; r.mute = ico.refs.mute;
   r.soundBtn.appendChild(ico.svg);
@@ -82,12 +76,10 @@ export function buildView(stage, opts) {
   // Main
   const main = el("main", "main"); main.id = "main";
   r.theme = el("h1", "theme");
-  if (opts.ring) { r.mark = el("div", "mark"); r.mark.appendChild(r.theme); main.appendChild(r.mark); }
-  else { r.mark = r.theme; main.appendChild(r.theme); }
+  r.mark = r.theme; main.appendChild(r.theme); // the scene centres its rings on the theme
   r.label = el("p", "label");
   r.count = el("p", "count"); r.count.setAttribute("role", "timer"); r.count.dir = "ltr";
   main.append(r.label, r.count);
-  if (opts.progress) { const bar = el("div", "bar"); bar.dir = "ltr"; r.fill = el("div", "bar-fill"); bar.appendChild(r.fill); main.appendChild(bar); }
   r.sub = el("p", "sub");
   const acts = el("div", "actions");
   r.commit = el("button", "btn"); r.commit.type = "button";
@@ -104,7 +96,7 @@ export function buildView(stage, opts) {
   r.steps = el("ol", "steps");
   r.stepEls = [0, 1, 2, 3].map((i) => {
     const li = el("li");
-    const n = el("span", "n", opts.numPrefix + (i + 1)); n.setAttribute("aria-hidden", "true");
+    const n = el("span", "n", String(i + 1)); n.setAttribute("aria-hidden", "true");
     const t = el("span", "t");
     li.append(n, t); r.steps.appendChild(li);
     return t;
@@ -144,14 +136,12 @@ export function buildView(stage, opts) {
       r.motionBtn.setAttribute("aria-pressed", String(s.motionOff));
       document.body.classList.toggle("still", s.motionOff);
       if (r.select.value !== s.lang) r.select.value = s.lang;
-      if (r.tz) setText(r.tz, s.tz + " · " + s.utc);
       r.soundBtn.setAttribute("aria-pressed", String(s.sound));
       r.waves.toggleAttribute("hidden", !s.sound);
-      if (r.mute) r.mute.toggleAttribute("hidden", s.sound);
+      r.mute.toggleAttribute("hidden", s.sound);
       setText(r.theme, s.theme);
       setText(r.label, s.countLabel);
       setText(r.count, s.count);
-      if (r.fill) { const w = (s.progress * 100).toFixed(2) + "%"; if (r.fill.style.width !== w) r.fill.style.width = w; }
       setText(r.sub, s.sub);
       setText(r.commit, s.commitLabel); r.commit.hidden = !s.showCommit;
       setText(r.committed, s.committedLabel); r.committed.hidden = !s.showCommitted;
